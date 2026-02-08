@@ -210,3 +210,7 @@ __marimo__/
 flow.txt
 cred.txt
 notebooks/
+data/
+data/interim/
+data/processed/
+data/raw/
