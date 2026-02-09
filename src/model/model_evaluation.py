@@ -59,6 +59,7 @@ def evaluate_model(model,x_test:np.ndarray,y_test:np.ndarray)->dict:
 def save_metrics(metrics:dict,file_path:str)->None:
     """saves the evaluation metics to a file path"""
     try:
+        os.makedirs("reports", exist_ok=True)
         with open(file_path,'w') as file:
             json.dump(metrics,file,indent=4)
         logging.info(f"metrics saved to {file_path}")
@@ -94,7 +95,7 @@ def main():
                 for param_name, param_value in params.items():
                     mlflow.log_param(param_name, param_value)
 
-            mlflow.sklearn.log_model(model,"model")
+            mlflow.sklearn.log_model(sk_model=model,artifact_path="model",registered_model_name="my_model")
             save_model_info(run.info.run_id, "model", 'reports/experiment_info.json')
             mlflow.log_artifact('reports/metrics.json')
 
