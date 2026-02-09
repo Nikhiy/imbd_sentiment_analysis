@@ -12,8 +12,16 @@ import mlflow.sklearn
 import dagshub
 import os
 
-mlflow.set_tracking_uri('https://dagshub.com/Nikhiy/imbd_sentiment_analysis.mlflow')
-dagshub.init(repo_owner='Nikhiy', repo_name='imbd_sentiment_analysis', mlflow=True)
+mlflow.set_tracking_uri("https://dagshub.com/Nikhiy/imbd_sentiment_analysis.mlflow")
+
+dagshub_token = os.getenv("DAGSHUB_TOKEN")
+
+if dagshub_token:
+    os.environ["MLFLOW_TRACKING_USERNAME"] = dagshub_token
+    os.environ["MLFLOW_TRACKING_PASSWORD"] = dagshub_token
+    dagshub.init(repo_owner="Nikhiy", repo_name="imbd_sentiment_analysis", mlflow=True)
+else:
+    print("DagsHub token not found → skipping DagsHub init (CI mode)")
 
 def load_model(file_path:str):
     """loads the mel from the file path"""
