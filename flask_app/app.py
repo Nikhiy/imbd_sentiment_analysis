@@ -81,18 +81,18 @@ dagshub.init(repo_owner='Nikhiy', repo_name='imbd_sentiment_analysis', mlflow=Tr
 #deployment code
 #----------
 # Set up DagsHub credentials for MLflow tracking
-# dagshub_token = os.getenv("CAPSTONE_TEST")
-# if not dagshub_token:
-#     raise EnvironmentError("CAPSTONE_TEST environment variable is not set")
+dagshub_token = os.getenv("CAPSTONE_TEST")
+if not dagshub_token:
+    raise EnvironmentError("CAPSTONE_TEST environment variable is not set")
 
-# os.environ["MLFLOW_TRACKING_USERNAME"] = dagshub_token
-# os.environ["MLFLOW_TRACKING_PASSWORD"] = dagshub_token
+os.environ["MLFLOW_TRACKING_USERNAME"] = dagshub_token
+os.environ["MLFLOW_TRACKING_PASSWORD"] = dagshub_token
 
-# dagshub_url = "https://dagshub.com/Nikhiy/imbd_sentiment_analysis.mlflow"
-# repo_owner = "Nikhiy"
-# repo_name = "imbd_sentiment_analysis"
+dagshub_url = "https://dagshub.com/Nikhiy/imbd_sentiment_analysis.mlflow"
+repo_owner = "Nikhiy"
+repo_name = "imbd_sentiment_analysis"
 # Set up MLflow tracking URI
-# mlflow.set_tracking_uri(f'{dagshub_url}/{repo_owner}/{repo_name}.mlflow')
+mlflow.set_tracking_uri(f'{dagshub_url}/{repo_owner}/{repo_name}.mlflow')
 
 app=Flask(__name__)
 #create a c1stom registry
