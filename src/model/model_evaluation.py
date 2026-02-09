@@ -14,14 +14,23 @@ import os
 
 mlflow.set_tracking_uri("https://dagshub.com/Nikhiy/imbd_sentiment_analysis.mlflow")
 
-dagshub_token = os.getenv("DAGSHUB_TOKEN")
 
-if dagshub_token:
-    os.environ["MLFLOW_TRACKING_USERNAME"] = dagshub_token
-    os.environ["MLFLOW_TRACKING_PASSWORD"] = dagshub_token
-    dagshub.init(repo_owner="Nikhiy", repo_name="imbd_sentiment_analysis", mlflow=True)
+# Detect if running in GitHub Actions
+running_in_ci = os.getenv("GITHUB_ACTIONS") == "true"
+
+if not running_in_ci:
+    dagshub_token = os.getenv("DAGSHUB_TOKEN")
+
+    if dagshub_token:
+        os.environ["MLFLOW_TRACKING_USERNAME"] = dagshub_token
+        os.environ["MLFLOW_TRACKING_PASSWORD"] = dagshub_token
+        dagshub.init(repo_owner="Nikhiy", repo_name="imbd_sentiment_analysis", mlflow=True)
+    else:
+        print("Local run without DagsHub token")
 else:
-    print("DagsHub token not found → skipping DagsHub init (CI mode)")
+    print("Skipping DagsHub init in CI")
+
+
 
 def load_model(file_path:str):
     """loads the mel from the file path"""
