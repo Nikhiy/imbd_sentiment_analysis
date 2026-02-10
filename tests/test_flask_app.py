@@ -1,5 +1,15 @@
 import unittest
-from flask_app import app
+import os
+import mlflow
+
+# 🔐 Set DagsHub auth BEFORE importing flask_app
+dagshub_token = os.getenv("CAPSTONE_TEST")
+if dagshub_token:
+    os.environ["MLFLOW_TRACKING_USERNAME"] = dagshub_token
+    os.environ["MLFLOW_TRACKING_PASSWORD"] = dagshub_token
+    mlflow.set_tracking_uri("https://dagshub.com/Nikhiy/imbd_sentiment_analysis.mlflow")
+
+from flask_app import app   # import AFTER auth
 
 class FlaskAppTestCase(unittest.TestCase):
     @classmethod
@@ -15,8 +25,7 @@ class FlaskAppTestCase(unittest.TestCase):
         response = self.client.post('/predict', data=dict(text='This is a test.'))
         self.assertEqual(response.status_code, 200)
         self.assertTrue(
-            b'Positive' in response.data or b'Negative' in response.data,
-            "Response should contain either 'Positive' or 'Negative'"
+            b'Positive' in response.data or b'Negative' in response.data
         )
 
 if __name__ == '__main__':
