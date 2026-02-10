@@ -75,8 +75,8 @@ def normalize_text(text):
 
 #local code 
 #----------------
-mlflow.set_tracking_uri('https://dagshub.com/Nikhiy/imbd_sentiment_analysis.mlflow')
-dagshub.init(repo_owner='Nikhiy', repo_name='imbd_sentiment_analysis', mlflow=True)
+# mlflow.set_tracking_uri('https://dagshub.com/Nikhiy/imbd_sentiment_analysis.mlflow')
+# dagshub.init(repo_owner='Nikhiy', repo_name='imbd_sentiment_analysis', mlflow=True)
 
 #deployment code
 #----------
@@ -88,7 +88,7 @@ if not dagshub_token:
 os.environ["MLFLOW_TRACKING_USERNAME"] = dagshub_token
 os.environ["MLFLOW_TRACKING_PASSWORD"] = dagshub_token
 
-dagshub_url = "https://dagshub.com/Nikhiy/imbd_sentiment_analysis.mlflow"
+dagshub_url = "https://dagshub.com"
 repo_owner = "Nikhiy"
 repo_name = "imbd_sentiment_analysis"
 # Set up MLflow tracking URI
@@ -134,9 +134,9 @@ def home():
     REQUEST_LATENCY.labels(endpoint="/").observe(time.time()-start_time)
     return response
 
-@app.route("/predicts",methods=["POST"])
+@app.route("/predict",methods=["POST"])
 def predict():
-    REQUEST_COUNT.labels(method="POST",endpoint="/predicts").inc()
+    REQUEST_COUNT.labels(method="POST",endpoint="/predict").inc()
     start_time=time.time()
     text=request.form["text"]
     #clean data
