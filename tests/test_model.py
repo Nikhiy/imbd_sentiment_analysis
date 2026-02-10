@@ -33,16 +33,19 @@ class TestModelLoading(unittest.TestCase):
         cls.new_model = mlflow.pyfunc.load_model(cls.new_model_uri)
 
         # Load the vectorizer
-        cls.vectorizer = pickle.load(open('models/vectorizer.pkl', 'rb'))
+        cls.vectorizer = pickle.load(open(os.path.join("models","vectorizer.pkl"),"rb"))
 
         # Load holdout test data
-        cls.holdout_data = pd.read_csv('data/processed/test_bow.csv')
+        cls.holdout_data = pd.read_csv(os.path.join("data","processed","test_bow.csv"))
 
     @staticmethod
     def get_latest_model_version(model_name, stage="Staging"):
         client = mlflow.MlflowClient()
         latest_version = client.get_latest_versions(model_name, stages=[stage])
-        return latest_version[0].version if latest_version else None
+        if not latest_version:
+            raise Exception(f"No model found in {stage}")
+        return latest_version[0].version
+
 
     def test_model_loaded_properly(self):
         self.assertIsNotNone(self.new_model)
