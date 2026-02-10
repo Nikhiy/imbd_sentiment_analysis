@@ -9,7 +9,7 @@ if dagshub_token:
     os.environ["MLFLOW_TRACKING_PASSWORD"] = dagshub_token
     mlflow.set_tracking_uri("https://dagshub.com/Nikhiy/imbd_sentiment_analysis.mlflow")
 
-from flask_app import app   # import AFTER auth
+from flask_app.app import app   # import AFTER auth
 
 class FlaskAppTestCase(unittest.TestCase):
     @classmethod
